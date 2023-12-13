@@ -1,0 +1,4 @@
+<resources>
+
+    <style name="Theme.Livetv" parent="@style/Theme.Leanback" />
+</resources>
