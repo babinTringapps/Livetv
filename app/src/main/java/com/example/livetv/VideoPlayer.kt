@@ -2,11 +2,13 @@ package com.example.livetv
 
 import android.os.Bundle
 import android.view.View
-import android.widget.RelativeLayout
+import android.widget.FrameLayout
 import androidx.fragment.app.FragmentActivity
+import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
+
 
 class VideoPlayer : FragmentActivity() {
 
@@ -22,11 +24,11 @@ class VideoPlayer : FragmentActivity() {
     }
 
     private val videoLayouts by lazy {
-        arrayOf<RelativeLayout>(
-            findViewById(R.id.videoFragment),
+        arrayOf<FrameLayout>(
             findViewById(R.id.videoFragment1),
             findViewById(R.id.videoFragment2),
-            findViewById(R.id.videoFragment3)
+            findViewById(R.id.videoFragment3),
+            findViewById(R.id.videoFragment4)
         )
     }
 
@@ -43,11 +45,15 @@ class VideoPlayer : FragmentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_video)
 
-        videoLayouts.forEachIndexed { index, layout ->
+        videoLayouts.forEachIndexed { focusedIndex, layout ->
             layout.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
-                if (hasFocus) {
-                    videoPlayers[index].volume = 1f
-                    otherPlayersMuted(index)
+                if (!hasFocus) return@OnFocusChangeListener
+
+                videoPlayers.forEachIndexed { index, player ->
+                    player.trackSelectionParameters = player.trackSelectionParameters
+                        .buildUpon()
+                        .setTrackTypeDisabled(C.TRACK_TYPE_AUDIO, index != focusedIndex)
+                        .build();
                 }
             }
         }
@@ -62,6 +68,7 @@ class VideoPlayer : FragmentActivity() {
             playerView.useController = false
             playerView.player = videoPlayers[index]
         }
+
         videoLayouts.first().requestFocus()
     }
 
@@ -70,11 +77,8 @@ class VideoPlayer : FragmentActivity() {
         videoPlayers.forEach { it.pause() }
     }
 
-    private fun otherPlayersMuted(currentIndex: Int) {
-        videoPlayers.forEachIndexed { index, player ->
-            if (index != currentIndex) {
-                player.volume = 0f
-            }
-        }
+    override fun onDestroy() {
+        super.onDestroy()
+        videoPlayers.forEach { it.release() }
     }
 }
