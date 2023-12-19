@@ -12,6 +12,7 @@ android {
         targetSdk 32
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
 
     }
 
@@ -25,6 +26,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
+ext.exoplayerVersion = '2.14.0'
 
 dependencies {
 
@@ -52,4 +54,9 @@ dependencies {
 
     implementation "androidx.media3:media3-ui-leanback:$media3_version"
     implementation "androidx.media3:media3-ui:$media3_version"
+
+
+    ext.fireTvSdkVersion = '2.0.0'
+    implementation "com.jwplayer:jwplayer-core:$fireTvSdkVersion"
+    implementation "com.jwplayer:jwplayer-common:$fireTvSdkVersion"
 }
