@@ -3,33 +3,63 @@ package com.example.livetv
 import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
+import androidx.annotation.OptIn
 import androidx.fragment.app.FragmentActivity
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
+import androidx.media3.common.util.Log
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.util.EventLogger
 import androidx.media3.ui.PlayerView
 
 
+@UnstableApi
 class VideoPlayer : FragmentActivity() {
 
-    private val videoPlayers by lazy { Array(4) { ExoPlayer.Builder(this).build() } }
+    companion object {
+        private const val NUMBER_OF_MULTI_VIEW = 4
+    }
+
+    private val defaultRenderersFactory by lazy {
+        DefaultRenderersFactory(this.applicationContext)
+            /*.setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON)
+            .forceEnableMediaCodecAsynchronousQueueing()*/
+    }
+
+    private val videoPlayers by lazy {
+        Array(NUMBER_OF_MULTI_VIEW) {
+            ExoPlayer.Builder(this, defaultRenderersFactory).build()
+        }
+    }
 
     private val playerViews by lazy {
-        arrayOf<PlayerView>(
-            findViewById(R.id.videoPlayer1),
-            findViewById(R.id.videoPlayer2),
-            findViewById(R.id.videoPlayer3),
-            findViewById(R.id.videoPlayer4)
+        val playerViewIds = arrayOf(
+            R.id.videoPlayer1,
+            R.id.videoPlayer2,
+            R.id.videoPlayer3,
+            R.id.videoPlayer4
         )
+        arrayListOf<PlayerView>().apply {
+            videoPlayers.forEachIndexed { index, _ ->
+                add(findViewById(playerViewIds[index]))
+            }
+        }
     }
 
     private val videoLayouts by lazy {
-        arrayOf<FrameLayout>(
-            findViewById(R.id.videoFragment1),
-            findViewById(R.id.videoFragment2),
-            findViewById(R.id.videoFragment3),
-            findViewById(R.id.videoFragment4)
+        val videoLayoutIds = arrayOf(
+            R.id.videoFragment1,
+            R.id.videoFragment2,
+            R.id.videoFragment3,
+            R.id.videoFragment4
         )
+        arrayListOf<FrameLayout>().apply {
+            videoPlayers.forEachIndexed { index, _ ->
+                add(findViewById(videoLayoutIds[index]))
+            }
+        }
     }
 
     private val mediaItems by lazy {
@@ -53,13 +83,14 @@ class VideoPlayer : FragmentActivity() {
                     player.trackSelectionParameters = player.trackSelectionParameters
                         .buildUpon()
                         .setTrackTypeDisabled(C.TRACK_TYPE_AUDIO, index != focusedIndex)
-                        .build();
+                        .build()
                 }
             }
         }
 
         videoPlayers.forEachIndexed { index, player ->
             player.setMediaItem(mediaItems[index])
+            player.addAnalyticsListener(EventLogger("EventLogger_${index + 1}"))
             player.prepare()
             player.play()
         }
