@@ -3,11 +3,9 @@ package com.example.livetv
 import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
-import androidx.annotation.OptIn
 import androidx.fragment.app.FragmentActivity
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
-import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
@@ -16,7 +14,7 @@ import androidx.media3.ui.PlayerView
 
 
 @UnstableApi
-class VideoPlayer : FragmentActivity() {
+class Media3PlayerActivity : FragmentActivity() {
 
     companion object {
         private const val NUMBER_OF_MULTI_VIEW = 4
@@ -24,8 +22,9 @@ class VideoPlayer : FragmentActivity() {
 
     private val defaultRenderersFactory by lazy {
         DefaultRenderersFactory(this.applicationContext)
-            /*.setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON)
-            .forceEnableMediaCodecAsynchronousQueueing()*/
+            .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON)
+            .forceEnableMediaCodecAsynchronousQueueing()
+            .setEnableDecoderFallback(true)
     }
 
     private val videoPlayers by lazy {

@@ -9,22 +9,44 @@
 
     <Button
         android:id="@+id/media3Player"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/jwplayer"
+        android:layout_marginHorizontal="16dp"
         android:background="@drawable/bg_focus"
-        android:text="Media3 Player"/>
+        android:text="@string/launch_media3_player"
+        app:layout_constraintBottom_toTopOf="@id/jwPlayer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/jwplayer"
-        android:layout_width="match_parent"
+        android:id="@+id/jwPlayer"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
         android:background="@drawable/bg_focus"
-        app:layout_constraintTop_toBottomOf="@id/media3Player"
-        android:text="JW Player"/>
+        android:text="@string/launch_jw_player"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/media3Player" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/jwPlayer">
+
+        <TextView
+            android:id="@+id/decoderInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:scrollbars="vertical"
+            android:text="@string/decoder_info" />
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

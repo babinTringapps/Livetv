@@ -22,7 +22,9 @@
             android:id="@+id/videoPlayer1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:surface_type="texture_view" />
+            app:show_buffering="always"
+            app:surface_type="texture_view"
+            app:use_controller="true" />
     </FrameLayout>
 
     <FrameLayout
@@ -42,7 +44,9 @@
             android:id="@+id/videoPlayer2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:surface_type="texture_view" />
+            app:show_buffering="always"
+            app:surface_type="texture_view"
+            app:use_controller="true" />
     </FrameLayout>
 
     <FrameLayout
@@ -62,7 +66,9 @@
             android:id="@+id/videoPlayer3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:surface_type="texture_view" />
+            app:show_buffering="always"
+            app:surface_type="texture_view"
+            app:use_controller="true" />
     </FrameLayout>
 
     <FrameLayout
@@ -82,7 +88,9 @@
             android:id="@+id/videoPlayer4"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:surface_type="texture_view" />
+            app:show_buffering="always"
+            app:surface_type="texture_view"
+            app:use_controller="true" />
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

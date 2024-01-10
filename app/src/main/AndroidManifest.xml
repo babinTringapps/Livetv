@@ -21,12 +21,6 @@
         android:theme="@style/Theme.Livetv"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".JWPlayerActivity"
-            android:exported="false" />
-        <activity
-            android:name=".VideoPlayer"
-            android:exported="false" />
-        <activity
             android:name=".SelectionActivity"
             android:banner="@drawable/app_icon_your_company"
             android:exported="true"
@@ -39,6 +33,12 @@
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".JWPlayerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Media3PlayerActivity"
+            android:exported="false" />
         <activity
             android:name=".PlaybackActivity"
             android:exported="false" />

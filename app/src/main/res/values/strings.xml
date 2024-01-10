@@ -17,4 +17,7 @@
     <string name="error_fragment_message">An error occurred</string>
     <string name="dismiss_error">Dismiss</string>
     <string name="title_activity_main2">Leanback MainActivity2</string>
+    <string name="launch_media3_player">Launch Media3 Player</string>
+    <string name="launch_jw_player">Launch JW Player</string>
+    <string name="decoder_info">Decoder Info</string>
 </resources>
