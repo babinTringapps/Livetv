@@ -6,8 +6,12 @@ import android.widget.FrameLayout
 import androidx.fragment.app.FragmentActivity
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
+import androidx.media3.common.PlaybackException
+import androidx.media3.common.Player
+import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.DefaultRenderersFactory
+import androidx.media3.exoplayer.ExoPlaybackException
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.util.EventLogger
 import androidx.media3.ui.PlayerView
@@ -90,12 +94,45 @@ class Media3PlayerActivity : FragmentActivity() {
         videoPlayers.forEachIndexed { index, player ->
             player.setMediaItem(mediaItems[index])
             player.addAnalyticsListener(EventLogger("EventLogger_${index + 1}"))
+            player.addListener(object : Player.Listener {
+                override fun onPlayerError(error: PlaybackException) {
+                    super.onPlayerError(error)
+                    val tag = "Player_${index + 1}"
+                    if (error is ExoPlaybackException) {
+                        when (error.type) {
+                            ExoPlaybackException.TYPE_SOURCE -> Log.e(
+                                tag,
+                                "TYPE_SOURCE: " + error.sourceException.message
+                            )
+
+                            ExoPlaybackException.TYPE_RENDERER -> Log.e(
+                                tag,
+                                "TYPE_RENDERER: " + error.rendererException.message
+                            )
+
+                            ExoPlaybackException.TYPE_UNEXPECTED -> Log.e(
+                                tag,
+                                "TYPE_UNEXPECTED: " + error.unexpectedException.message
+                            )
+
+                            ExoPlaybackException.TYPE_REMOTE -> Log.e(
+                                tag,
+                                "TYPE_REMOTE: " + error.message
+                            )
+                        }
+                    } else {
+                        Log.e(
+                            tag,
+                            "TYPE_NON_EXO_PLAYBACK_EXCEPTION: " + error.message
+                        )
+                    }
+                }
+            })
             player.prepare()
             player.play()
         }
 
         playerViews.forEachIndexed { index, playerView ->
-            playerView.useController = false
             playerView.player = videoPlayers[index]
         }
 
